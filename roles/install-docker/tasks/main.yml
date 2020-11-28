@@ -1,0 +1,40 @@
+---
+# tasks file for install-docker
+- name: Intall packages for installation docker.
+  apt: 
+    name:
+      - git
+      - apt-transport-https
+      - ca-certificates
+      - wget
+      - software-properties-common
+      - gnupg2
+      - curl
+    state: latest
+    install_recommends: yes
+  when: ansible_os_family == "Debian"
+
+- name: Add Apt signing key from official docker repo
+  apt_key:
+    url: "{{ docker_repo_keyurl }}"
+    state: present
+
+- name: Add docker official repository for Debian Stretch
+  apt_repository:
+    repo: "{{ docker_repo_repourl }}"
+    state: present
+
+- name: Include the 'dist-upgrade' role
+  include_role:
+    name: dist-upgrade
+
+- name: Actually install docker
+  apt:
+    name: "docker-ce"
+    state: latest
+
+- name: Ensure docker-compose is installed and available
+  get_url:
+    url: "{{ docker_repo_dockercompose_url }}"
+    dest: /usr/local/bin/docker-compose
+    mode: 'u+x,g+x'

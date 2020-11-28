@@ -1,0 +1,7 @@
+---
+# handlers file for install-packages
+- name: Restart NTP
+  service:
+    name: ntp
+    state: restarted
+    enabled: yes

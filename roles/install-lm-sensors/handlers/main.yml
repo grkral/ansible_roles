@@ -1,0 +1,8 @@
+---
+# handlers file for install-lm-sensors
+- name: Scan sensors
+  package:
+  notify:
+    - run sensors-detect
+    - restart lm-sensors
+  when: ansible_os_family == "Debian"

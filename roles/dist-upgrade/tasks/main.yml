@@ -1,0 +1,6 @@
+---
+# tasks file for dist-upgrade
+- name: apt dist-upgrade
+  apt:
+    upgrade: dist
+    update_cache: yes

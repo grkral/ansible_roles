@@ -1,0 +1,26 @@
+---
+# tasks file for install-packages
+- name: Intall packages.
+  apt: 
+    name:
+      - git
+      - ntp
+      - tmux
+      - tree
+    state: present
+    install_recommends: yes
+  when: ansible_os_family == "Debian"
+
+- name: Copy over the NTP configuration
+  ansible.builtin.template:
+    src: ntp.conf
+    dest: /etc/ntp.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart NTP
+
+- name: Set timezone
+  timezone:
+    name: "{{ local_timezone }}"
+  notify: Restart NTP

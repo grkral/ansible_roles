@@ -1,0 +1,3 @@
+---
+# defaults file for install-packages
+local_timezone          : "Asia/Yekaterinburg"

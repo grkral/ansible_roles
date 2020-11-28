@@ -1,0 +1,10 @@
+---
+# tasks file for install-lm-sensors
+- name: Intall lm-sensors.
+  apt: 
+    name:
+      - lm-sensors
+    state: present
+    install_recommends: yes
+  when: ansible_os_family == "Debian"
+  notify: Scan sensors
