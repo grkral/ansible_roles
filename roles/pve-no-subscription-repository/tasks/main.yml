@@ -1,19 +1,28 @@
 ---
 # tasks file for pve-no-subscription-repository
-- name: remove enterprise repo
+- name: remove proxmox enterprise repo
   apt_repository:
     repo: "deb https://enterprise.proxmox.com/debian/pve {{ ansible_distribution_release }} pve-enterprise"
     state: absent
     filename: 'pve-enterprise'
+  when: 
+    - ansible_os_family == "Debian" and 
+      inventory_hostname in groups['pve']
 
 - name: Add proxmox key
   apt_key:
     url: "{{ pve_repo_keyurl }}"
     keyring: "{{ pve_repo_keyring }}"
     state: present
+  when: 
+    - ansible_os_family == "Debian" and 
+      inventory_hostname in groups['pve']
 
 - name: Add proxmox repository
   apt_repository:
     repo: "{{ pve_repo_repourl }}"
     filename: "{{ pve_repo_repofilename }}"
     state: present
+  when: 
+    - ansible_os_family == "Debian" and 
+      inventory_hostname in groups['pve']

@@ -1,0 +1,120 @@
+---
+# tasks file for install-jenkins
+
+
+#apt repo
+- name: Add Apt signing key from official jenkins repo Debian
+  apt_key:
+    url: "{{ jenkins_repo_keyurl }}"
+    state: present
+  when: ansible_os_family == "Debian"
+
+
+- name: Add jenkins repository Debian
+  apt_repository:
+    repo: "{{ jenkins_repo_repourl }}"
+    filename: "{{ jenkins_repo_repofilename }}"
+    state: present
+  when: ansible_os_family == "Debian"
+
+
+#rpm repo
+- name: Add jenkins repository RedHat
+  get_url:
+    url: "{{ jenkins_rpm_repo_url }}"
+    dest: /etc/yum.repos.d/jenkins.repo
+  when: ansible_os_family == "RedHat"
+
+
+- name: Add Jenkins GPG key from official jenkins repo RedHat
+  rpm_key:
+    state: present
+    key: "{{ jenkins_rpm_repo_key_url }}"
+  when: ansible_os_family == "RedHat"
+
+
+#update and install packages
+- name: Include the 'dist-upgrade' role
+  include_role:
+    name: dist-upgrade
+
+
+- name: Intall packages.
+  apt: 
+    name:
+      - openjdk-11-jre
+      - nginx
+      - jenkins
+    state: present
+    install_recommends: yes
+  when: ansible_os_family == "Debian"
+
+
+- name: Intall packages.
+  yum:
+    name:
+      - openjdk-11-jre
+      - nginx
+      - jenkins
+    state: present
+  when: ansible_os_family == "RedHat"
+
+
+#copy conf files
+- name: Copy over the nginx configuration
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: /etc/nginx/
+    owner: root
+    group: root
+    mode: '0644'
+  with_items:
+    - "nginx.conf"
+    - "cert.key"
+    - "cert.crt"
+  notify: Restart nginx
+
+
+- name: Copy over the jenkins configuration
+  ansible.builtin.template:
+    src: "{{ item }}"
+    dest: /etc/default/
+    owner: root
+    group: root
+    mode: '0644'
+  with_items:
+    - "jenkins"
+  notify: Restart jenkins
+
+
+#deny 8080/tcp
+- firewalld:
+    port: 8080/tcp
+    source: localhost
+    permanent: true
+    state: enabled
+  when: ansible_os_family == "RedHat"
+
+
+- firewalld:
+    port: 8080/tcp
+    permanent: true
+    state: disabled
+  when: ansible_os_family == "RedHat"
+
+
+- iptables:
+    chain: INPUT
+    source: localhost
+    destination_port: 8080
+    protocol: tcp
+    jump: ACCEPT
+  when: ansible_os_family == "Debian"
+
+
+- iptables:
+    chain: INPUT
+    destination_port: 8080
+    protocol: tcp
+    jump: DROP
+  when: ansible_os_family == "Debian"

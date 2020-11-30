@@ -1,0 +1,13 @@
+---
+# handlers file for install-jenkins
+- name: Restart nginx
+  service:
+    name: nginx
+    state: restarted
+    enabled: yes
+
+- name: Restart jenkins
+  service:
+    name: jenkins
+    state: restarted
+    enabled: yes

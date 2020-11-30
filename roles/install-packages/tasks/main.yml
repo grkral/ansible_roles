@@ -1,6 +1,6 @@
 ---
 # tasks file for install-packages
-- name: Intall packages.
+- name: Intall packages Debian.
   apt: 
     name:
       - git
@@ -10,6 +10,17 @@
     state: present
     install_recommends: yes
   when: ansible_os_family == "Debian"
+
+- name: Intall packages RedHat.
+  yum:
+    name:
+      - git
+      - ntp
+      - tmux
+      - tree
+    enablerepo: "epel,ol7_latest"
+    state: present
+  when: ansible_os_family == "RedHat"
 
 - name: Copy over the NTP configuration
   ansible.builtin.template:

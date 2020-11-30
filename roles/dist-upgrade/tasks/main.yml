@@ -1,6 +1,14 @@
 ---
 # tasks file for dist-upgrade
-- name: apt dist-upgrade
+- name: apt dist-upgrade Debian
   apt:
     upgrade: dist
     update_cache: yes
+  when: ansible_os_family == "Debian"
+
+
+- name: Upgrade all packages RedHat
+  yum:
+    name: '*'
+    state: latest
+  when: ansible_os_family == "RedHat"

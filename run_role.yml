@@ -1,0 +1,54 @@
+---
+  - name: run roles
+    hosts: linux
+    become: yes
+
+
+
+    tasks:
+      - name: Include the 'pve-no-subscription-repository' role
+        include_role:
+          name: pve-no-subscription-repository
+        when: 
+          - ansible_os_family == "Debian" and 
+            inventory_hostname in groups['pve']
+
+
+      - name: Include the 'dist-upgrade' role
+        include_role:
+          name: dist-upgrade
+
+
+      - name: Include the 'install-packages' role
+        include_role:
+          name: install-packages
+
+
+      - name: Include the 'install-lm-sensors' role
+        include_role:
+          name: install-lm-sensors
+        when: ansible_os_family == "Debian"
+
+
+      - name: Include the 'install-jenkins' role
+        include_role:
+          name: install-jenkins
+        when: 
+          - inventory_hostname in groups['jenkins_master']
+
+
+      - name: Include the 'install-docker' role
+        include_role:
+          name: install-docker
+        when: 
+          - ansible_os_family == "Debian" and 
+            inventory_hostname in groups['docker']
+
+
+      - name: Include the 'install-ansible' role
+        include_role:
+          name: install-python-pip #ansible, paramiko
+        when: 
+          - ansible_os_family == "Debian" and 
+            inventory_hostname in groups['ansible']
+

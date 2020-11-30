@@ -6,5 +6,4 @@
       - lm-sensors
     state: present
     install_recommends: yes
-  when: ansible_os_family == "Debian"
   notify: Scan sensors

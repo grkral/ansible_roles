@@ -1,0 +1,7 @@
+---
+# defaults file for install-jenkins
+jenkins_repo_keyurl         : "https://pkg.jenkins.io/debian/jenkins.io.key"
+jenkins_repo_repourl        : "deb https://pkg.jenkins.io/debian binary/"
+jenkins_repo_repofilename   : "/etc/apt/sources.list.d/jenkins"
+jenkins_rpm_repo_url        : "https://pkg.jenkins.io/redhat-stable/jenkins.repo"
+jenkins_rpm_repo_key_url    : "https://pkg.jenkins.io/redhat-stable/jenkins.io.key"

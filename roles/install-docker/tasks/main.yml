@@ -12,7 +12,6 @@
       - curl
     state: latest
     install_recommends: yes
-  when: ansible_os_family == "Debian"
 
 - name: Add Apt signing key from official docker repo
   apt_key:
