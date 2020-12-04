@@ -5,3 +5,11 @@
     name: ntp
     state: restarted
     enabled: yes
+  when: ansible_os_family == "Debian"
+
+- name: Restart Chrony
+  systemd:
+    name: chronyd
+    state: restarted
+    enabled: yes
+  when: ansible_os_family == "RedHat"

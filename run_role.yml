@@ -1,6 +1,7 @@
 ---
   - name: run roles
     hosts: linux
+    #any_errors_fatal: true
     become: yes
 
 
@@ -14,11 +15,19 @@
             inventory_hostname in groups['pve']
 
 
+      - name: Include the 'omv-extras' role
+        include_role:
+          name: omv-extras
+        when: 
+          - ansible_os_family == "Debian" and 
+            inventory_hostname in groups['omv']
+
+
       - name: Include the 'dist-upgrade' role
         include_role:
           name: dist-upgrade
 
-
+      #V
       - name: Include the 'install-packages' role
         include_role:
           name: install-packages
@@ -30,6 +39,7 @@
         when: ansible_os_family == "Debian"
 
 
+      #V   
       - name: Include the 'install-jenkins' role
         include_role:
           name: install-jenkins

@@ -1,3 +1,8 @@
 ---
 # defaults file for install-packages
+src_ntp_conf_debian     : "ntp.conf.j2"
+dest_ntp_conf_debian    : "/etc/ntp.conf"
+src_ntp_conf_redhat     : "chrony.conf.j2"
+dest_ntp_conf_redhat    : "/etc/chrony.conf"
 local_timezone          : "Asia/Yekaterinburg"
+ntp_server_address      : '10.10.10.200'

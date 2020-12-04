@@ -60,8 +60,8 @@ MAXOPENFILES=8192
 # UMASK=027
 
 # port for HTTP connector (default 8080; disable with -1)
-HTTP_PORT=8080
-
+HTTP_HOST="{{ jenkins_listen_address }}"
+HTTP_PORT="{{ jenkins_listen_port }}"
 
 # servlet context, important if you want to use apache proxying
 PREFIX=/$NAME
@@ -76,4 +76,4 @@ PREFIX=/$NAME
 # --webroot=~/.jenkins/war
 # --prefix=$PREFIX
 
-JENKINS_ARGS="--webroot=/var/cache/jenkins/war --httpListenAddress=127.0.0.1 --httpPort=$HTTP_PORT
+JENKINS_ARGS="--webroot=/var/cache/jenkins/war --httpListenAddress=$HTTP_HOST --httpPort=$HTTP_PORT"

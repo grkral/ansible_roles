@@ -1,0 +1,4 @@
+---
+# tasks file for omv-extras
+- name: Intall Openmediavault extras.
+  shell: "wget -O - https://github.com/OpenMediaVault-Plugin-Developers/packages/raw/master/install | bash"

@@ -11,3 +11,11 @@
     name: jenkins
     state: restarted
     enabled: yes
+
+
+- name: Restart firewalld
+  systemd:
+    name: firewalld
+    state: restarted
+    enabled: yes
+  when: ansible_os_family == "RedHat"

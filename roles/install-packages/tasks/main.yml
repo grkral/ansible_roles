@@ -11,25 +11,39 @@
     install_recommends: yes
   when: ansible_os_family == "Debian"
 
+
 - name: Intall packages RedHat.
   yum:
     name:
       - git
-      - ntp
+      - chrony
       - tmux
       - tree
     enablerepo: "epel,ol7_latest"
     state: present
   when: ansible_os_family == "RedHat"
 
-- name: Copy over the NTP configuration
+
+- name: Copy over the NTP configuration Debian
   ansible.builtin.template:
-    src: ntp.conf
-    dest: /etc/ntp.conf
+    src: "{{ src_ntp_conf_debian }}"
+    dest: "{{ dest_ntp_conf_debian }}"
     owner: root
     group: root
     mode: '0644'
   notify: Restart NTP
+  when: ansible_os_family == "Debian"
+
+
+- name: Copy over the NTP configuration RedHat
+  ansible.builtin.template:
+    src: "{{ src_ntp_conf_redhat }}"
+    dest: "{{ dest_ntp_conf_redhat }}"
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Chrony
+  when: ansible_os_family == "RedHat"
 
 - name: Set timezone
   timezone:
