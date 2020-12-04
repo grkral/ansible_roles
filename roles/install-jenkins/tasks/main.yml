@@ -51,7 +51,7 @@
       group: root
       mode: '0644'
     with_items:
-      - "jenkins.debian.j2"
+      - "{{ jenkins_conf_file_debian }}"
     notify: Restart jenkins
 
 
@@ -122,7 +122,7 @@
       group: root
       mode: '0644'
     with_items:
-      - "jenkins.redhat.j2"
+      - "{{ jenkins_conf_file_redhat }}"
     notify: Restart jenkins
 
 
@@ -153,12 +153,22 @@
   - name: Copy over the nginx configuration
     ansible.builtin.template:
       src: "{{ item }}"
+      dest: "{{ nginx_conf_file_dest }}"
+      owner: root
+      group: root
+      mode: '0644'
+    with_items:
+      - "{{ nginx_conf_file }}"
+    notify: Restart nginx
+
+  - name: Copy over the nginx certificate and key
+    ansible.builtin.template:
+      src: "{{ item }}"
       dest: "{{ nginx_conf_dest }}"
       owner: root
       group: root
       mode: '0644'
     with_items:
-      - "nginx.conf"
-      - "cert.key"
-      - "cert.crt"
+      - "{{ nginx_https_private_key }}"
+      - "{{ nginx_https_cert_crt }}"
     notify: Restart nginx

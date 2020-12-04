@@ -5,8 +5,18 @@ jenkins_repo_repourl        : "deb https://pkg.jenkins.io/debian binary/"
 jenkins_repo_repofilename   : "/etc/apt/sources.list.d/jenkins"
 jenkins_rpm_repo_url        : "https://pkg.jenkins.io/redhat-stable/jenkins.repo"
 jenkins_rpm_repo_key_url    : "https://pkg.jenkins.io/redhat-stable/jenkins.io.key"
+
+jenkins_conf_file_debian    : "jenkins.debian.j2"
 jenkins_conf_debian_dest    : "/etc/default/jenkins"
+jenkins_conf_file_redhat    : "jenkins.redhat.j2"
 jenkins_conf_redhat_dest    : "/etc/sysconfig/jenkins"
+
 nginx_conf_dest             : "/etc/nginx/"
-jenkins_listen_address      : '127.0.0.1'
+nginx_conf_file             : "nginx.conf.j2"
+nginx_conf_file_dest        : "/etc/nginx/nginx.conf"
+
+jenkins_listen_address      : 'localhost'
 jenkins_listen_port         : '8080'
+
+nginx_https_private_key     : "cert.key"
+nginx_https_cert_crt        : "cert.crt"
