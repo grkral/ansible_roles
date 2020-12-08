@@ -1,6 +1,9 @@
 ---
 # tasks file for install-docker
+
+#=========START BLOCK FOR DEBIAN=========
 - block:
+
 
   - name: Intall packages for installation docker.
     apt: 
@@ -13,33 +16,81 @@
         - gnupg2
         - curl
       state: latest
+      update_cache: yes
       install_recommends: yes
-  
-  - name: Add Apt signing key from official docker repo
+
+
+  - name: Add Apt signing key from official docker repo Debian
     apt_key:
-      url: "{{ docker_repo_keyurl }}"
+      url: "{{ docker_debian_repo_keyurl }}"
       state: present
-  
+
+
   - name: Add docker official repository for Debian Stretch
     apt_repository:
-      repo: "{{ docker_repo_repourl }}"
+      repo: "{{ docker_debian_repo_repourl }}"
       state: present
-  
+
+
   - name: Include the 'dist-upgrade' role
     include_role:
       name: dist-upgrade
-  
-  - name: Actually install docker
+
+
+  - name: Actually install docker Debian
     apt:
-      name: "docker-ce"
+      name: 
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
       state: latest
 
+
   when: ansible_os_family == "Debian"
+#=========END BLOCK FOR DEBIAN=========
 
 
+#=========START BLOCK FOR REDHAT=========
+- block:
+
+
+  - name: Add Docker repository RedHat
+    get_url:
+      url: "{{ docker_redhat_repo_repourl }}"
+      dest: /etc/yum.repos.d/docker-ce.repo
+
+  - name: Include the 'dist-upgrade' role
+    include_role:
+      name: dist-upgrade
+
+  - name: Intall packages for installation docker.
+    yum: 
+      name:
+        - git
+        - ca-certificates
+        - wget
+        - gnupg2
+        - curl
+        - yum-utils
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+      state: latest
+
+
+  when: ansible_os_family == "RedHat"
+#=========END BLOCK FOR REDHAT=========
 
 - name: Ensure docker-compose is installed and available
   get_url:
     url: "{{ docker_repo_dockercompose_url }}"
     dest: /usr/local/bin/docker-compose
+    mode: 'u+x,g+x'
+
+
+- name: Create sym link to docker-compose
+  file:
+    src: /usr/local/bin/docker-compose
+    dest: /usr/bin/docker-compose
+    state: link
     mode: 'u+x,g+x'

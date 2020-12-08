@@ -1,0 +1,6 @@
+---
+# defaults file for conf-win
+group_rus_users         : 'Пользователи'
+group_eng_users         : 'Users'
+windows_username        : 'MarinaAndreevna'
+windows_userpassword    : 'S0mePa$$w0rd'

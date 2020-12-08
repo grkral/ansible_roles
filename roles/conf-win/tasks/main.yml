@@ -1,0 +1,26 @@
+# ---
+# # tasks file for conf-win
+
+# - name: Ensure english user is present
+#   ansible.windows.win_user:
+#     name: "{{ windows_username }}"
+#     password: "{{ windows_userpassword }}"
+#     state: present
+#     groups:
+#       - "{{ group_eng_users }}"
+#   when: inventory_hostname in groups['windows_eng']
+
+# - name: Ensure russian user is present
+#   ansible.windows.win_user:
+#     name: "{{ windows_username }}"
+#     password: "{{ windows_userpassword }}"
+#     state: present
+#     groups:
+#       - "{{ group_rus_users }}"
+#   when: inventory_hostname in groups['windows_rus']
+
+
+- name: Ensure user is absent
+  ansible.windows.win_user:
+    name: "{{ windows_username }}"
+    state: absent
