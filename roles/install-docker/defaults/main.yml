@@ -4,3 +4,11 @@ docker_debian_repo_keyurl               : "https://download.docker.com/linux/deb
 docker_debian_repo_repourl              : "deb [arch=amd64] https://download.docker.com/linux/debian stretch stable"
 docker_redhat_repo_repourl              : "https://download.docker.com/linux/centos/docker-ce.repo"
 docker_repo_dockercompose_url           : "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-{{ ansible_system }}-{{ ansible_userspace_architecture }}"
+docker_users                            : []
+
+# For Python 3, use python3-pip.
+
+pip_package: python3-pip
+pip_executable: "{{ 'pip3' if pip_package.startswith('python3') else 'pip' }}"
+
+pip_install_packages: ['docker-compose',]

@@ -81,6 +81,12 @@
   when: ansible_os_family == "RedHat"
 #=========END BLOCK FOR REDHAT=========
 
+- include_tasks: docker-users.yml
+  when: docker_users | length > 0
+
+- include_tasks: pip_docker-compose.yml
+  when: pip_install_packages | length > 0
+
 - name: Ensure docker-compose is installed and available
   get_url:
     url: "{{ docker_repo_dockercompose_url }}"

@@ -1,8 +1,15 @@
 ---
 # tasks file for pve-no-subscription-repository
+
+- name: Intall python-apt.
+  shell: apt install python-apt -y
+  when: 
+    - ansible_os_family == "Debian" and 
+      inventory_hostname in groups['pve']
+
 - name: remove proxmox enterprise repo
   apt_repository:
-    repo: "deb https://enterprise.proxmox.com/debian/pve {{ ansible_distribution_release }} pve-enterprise"
+    repo: "deb https://enterprise.proxmox.com/debian/pve buster pve-enterprise"
     state: absent
     filename: 'pve-enterprise'
   when: 
