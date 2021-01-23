@@ -2,7 +2,7 @@
 # tasks file for pve-no-subscription-repository
 
 - name: Intall python-apt.
-  shell: apt install python-apt -y
+  shell: test -e /usr/share/python-apt || ( apt update; apt install -y python-apt )
   when: 
     - ansible_os_family == "Debian" and 
       inventory_hostname in groups['pve']
