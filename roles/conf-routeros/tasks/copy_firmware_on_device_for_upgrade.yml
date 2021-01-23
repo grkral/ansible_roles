@@ -1,0 +1,9 @@
+---
+- name: copy firmware to device
+  shell: "scp -P {{ansible_ssh_port}} {{ FIRMWARE_PATH }}{{ item }} {{ ansible_user }}@{{ ansible_host }}:/{{ item }}"
+  with_items:
+    - "{{ FIRMWARE_NAME }}"
+  register: result
+  retries: 5
+  delay: 10
+  until: result is not failed

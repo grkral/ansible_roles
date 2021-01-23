@@ -1,0 +1,11 @@
+---
+- name: Copy firmware to device
+  command: "scp -P {{ansible_ssh_port}} {{ SCRIPT_PATH }}{{item}} {{ansible_user}}@{{ansible_host}}:/{{item}}"
+  with_items:
+  - "{{ SCRIPT_NAME }}"
+
+- name: Import and remove scripts
+  routeros_command:
+    commands:
+    - /import "{{ SCRIPT_NAME }}"
+    - /file remove "{{ SCRIPT_NAME }}"

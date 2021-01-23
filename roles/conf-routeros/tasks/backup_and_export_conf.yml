@@ -1,0 +1,50 @@
+---
+- name: Create backup directory
+  file: 
+    path: "{{ BACKUP_PATH }}"
+    state: directory
+  delegate_to: 127.0.0.1
+
+
+  
+- name: Make .backup File
+  routeros_command:
+    commands: /system backup save name={{ BACKUP_NAME }}
+  register: result
+  retries: 5
+  delay: 10
+  until: result is not failed
+
+
+
+- name: Make .rsc File
+  routeros_command:
+    commands: /export file={{ EXPORT_NAME }}
+  register: result
+  retries: 5
+  delay: 10
+  until: result is not failed
+
+
+
+- name: Copy backup files to server
+  shell: "scp -P {{ ansible_ssh_port }} {{ ansible_user }}@{{ ansible_host }}:/{{ item }} {{ BACKUP_PATH }}/{{ item }}"
+  with_items:
+    - "{{ BACKUP_NAME }}"
+    - "{{ EXPORT_NAME }}"
+  register: result
+  retries: 5
+  delay: 10
+  until: result is not failed
+
+
+
+- name: Delete backup files from devices
+  routeros_command:
+    commands:
+      - /file remove "{{ BACKUP_NAME }}"
+      - /file remove "{{ EXPORT_NAME }}"
+  register: result
+  retries: 5
+  delay: 10
+  until: result is not failed

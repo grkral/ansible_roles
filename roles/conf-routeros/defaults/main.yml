@@ -1,0 +1,37 @@
+---
+# defaults file for conf-routeros
+#<copy_scripts_files_to_device>
+SCRIPT_PATH                 : /root/ansible/ros/scripts_rsc/
+SCRIPT_NAME		            : "RouterBoardFirmwareAutoUpgrade.rsc"
+#</copy_scripts_files_to_device>
+
+
+#<create_ansible_user_on_device>
+managment_admin_username    : "??"
+managment_admin_password    : "??"
+managment_admin_password    : "??"
+#</create_ansible_user_on_device>
+
+
+
+#<based_device_config>
+DATE_TIME                   : "{{ lookup('pipe','date +%Y.%m.%d') }}"
+KEY_NAME	                : "{{ inventory_hostname }}"
+KEY_PATH		            : "/root/.ssh/authorized_keys/"
+SSH_CONFIG_FILE	            : "/root/.ssh/config"
+SSH_CONFIG		            : "\nHost {{ ansible_ssh_host }}\nIdentityFile {{ KEY_PATH }}{{ inventory_hostname }}"
+#</based_device_config>
+
+
+
+#<backup_and_export_conf>
+BACKUP_PATH                 : "/root/ansible/ros/backups/{{ inventory_hostname }}/"
+BACKUP_NAME                 : "{{ DATE_TIME }}_backup_{{inventory_hostname}}.backup"
+EXPORT_NAME                 : "{{ DATE_TIME }}_export_{{ inventory_hostname }}.rsc"
+#</backup_and_export_conf>
+
+
+#<copy_firmware_on_device_for_upgrade>
+FIRMWARE_PATH	            : "/root/ros/firmware/chr/"
+FIRMWARE_NAME	            : "routeros-x86-6.46.7.npk"
+#</copy_firmware_on_device_for_upgrade>

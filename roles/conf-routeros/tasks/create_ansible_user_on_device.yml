@@ -1,0 +1,7 @@
+---
+- name: Create group and user, change permissions
+  routeros_command:
+    commands:
+      - /user add name={{ managment_admin_username }} group=full password={{ managment_admin_password }}
+      - /user group add name=no_full policy=api,ftp,read,romon,sniff,telnet,tikapp,winbox,dude,local,reboot,sensitive,ssh,test,web,write
+      - /user set {{ simple_admin_username }} group=no_full

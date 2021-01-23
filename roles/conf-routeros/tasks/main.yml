@@ -1,0 +1,5 @@
+---
+# tasks file for conf-routeros
+- include_tasks: "{{ item }}"
+  with_items: 
+    - "upgrade_firmware.yml"

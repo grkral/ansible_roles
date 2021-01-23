@@ -1,0 +1,4 @@
+---
+  - name: Upgrade firmware and reboot
+    routeros_command:
+      commands: if ( [/system routerboard get current-firmware] < [/system routerboard get upgrade-firmware] ) do {/system routerboard upgrade}

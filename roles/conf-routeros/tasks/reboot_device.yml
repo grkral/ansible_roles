@@ -1,0 +1,8 @@
+---
+- name: Reboot RouterOS device
+  routeros_command:
+    commands: ":execute {/system reboot};"
+  register: result
+  retries: 5
+  delay: 10
+  until: result is not failed
